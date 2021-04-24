@@ -1,52 +1,45 @@
 extends KinematicBody2D
-var target = global_position
+
+var speed = 240
+var health = 50
+var damage = 10
+
+onready var anim = $animatedSprite
+
 func _process(delta):
-	target = global_position
-export (int) var speed = 200
-
-var vel = Vector2()
-
-func get_input():
-	vel = Vector2()
-	if Input.is_action_pressed("ui_right"):
-		vel.x += 1
-	if Input.is_action_pressed("ui_left"):
-		vel.x -= 1
-	if Input.is_action_pressed("ui_down"):
-		vel.y += 1
-	if Input.is_action_pressed("ui_up"):
-		vel.y -= 1
-	vel = vel.normalized() * speed
-
-func _physics_process(delta):
-	get_input()
-	vel = move_and_slide(vel)
 	
-
-
-signal health_changed
-signal died
-export var max_health = 100
-var health = max_health
-
-# When the character dies, we fade the UI
-enum STATES {ALIVE, DEAD}
-var state = STATES.ALIVE
-func take_damage(count):
-	if state == STATES.DEAD:
-		return
-	print_debug("hello")
-	health -= count
+	$healthtext.text = str(health)
+	
+	if Input.is_action_just_pressed("ui_accept"):
+		anim.play("punch")
+		var coll = $"Area2D".get_overlapping_bodies()
+		print(coll)
+		for e in coll:
+			if e.has_method("damage"):
+				e.damage(damage)
+	
 	if health <= 0:
-		health = 0
-		state = STATES.DEAD
-		emit_signal("died")
+		get_tree().quit()
+	
+	var vel = Vector2()
+	
+	if Input.is_action_pressed("ui_left"):
+		vel.x -= speed
+		anim.play("walk")
+		anim.flip_h = false
+	elif Input.is_action_pressed("ui_right"):
+		vel.x += speed
+		anim.play("walk")
+		anim.flip_h = true
+	elif Input.is_action_pressed("ui_up"):
+		vel.y -= speed
+		anim.play("walk")
+	elif Input.is_action_pressed("ui_down"):
+		vel.y += speed
+		anim.play("walk")
+	
+	vel = vel.normalized() * speed
+	move_and_slide(vel)
 
-
-	emit_signal("health_changed", health)
-
-
-	if state != STATES.DEAD:
-		return
-	if name != "take_hit":
-		return
+func take_damage(d):
+	health -= d

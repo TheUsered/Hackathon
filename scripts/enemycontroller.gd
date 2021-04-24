@@ -2,10 +2,11 @@ extends KinematicBody2D
 
 onready var ray = $"ray"
 onready var rayFloor = $"rayFloor"
-onready var player = $"../player"
+#onready var player = $"../player"
+onready var barProgress = $"VBoxContainer/TextureProgress"
 onready var attackArea = $"attackArea"
 var vel = Vector2(0, 120)
-onready var target = $"../player"
+#onready var target = $"../player"
 var enemyTarget = global_position
 func _process(delta):
 	enemyTarget = global_position
@@ -33,8 +34,6 @@ func _process(delta):
 			vel.x = 0
 			print("down")
 		
-		#rayFloor.rotation_degrees += 180
-		#vel.y *= -1
 	move_and_slide(vel)
 	
 	
@@ -45,21 +44,32 @@ signal area_entered
 export var strength = 6
 
 func damage_target(target, damage):
-	target.take_damage(damage)
+	if target.has_method("take_damage"):
+		target.take_damage(damage)
 
-func enemyAttack(name):
-	if name == "attack":
-		state = STATES.IDLE
-	if name == "anticipate":
-		damage_target(target, strength)
 
-func _on_Player_died():
-	target = null
-
-func _on_attackArea_area_entered(area):
-	print ("area signaled")
-	enemyAttack("anticipate")
 
 func _on_attackArea_body_entered(body):
-	print ("body signaled")
-	enemyAttack("anticipate")
+
+	damage_target(body,3)
+
+#enemy health
+export var enemyMaxHealth = 50
+var enemyHealth = enemyMaxHealth
+
+enum STATESLife {ALIVE, DEAD}
+var statelife = STATESLife.ALIVE
+func take_damage(count):
+	if statelife == STATESLife.DEAD:
+		return
+	print_debug("hello2.0")
+	enemyHealth -= count
+	if enemyHealth <= 0:
+		enemyHealth = 0
+		print("imdead")
+		statelife = STATESLife.DEAD
+		emit_signal("died")
+func damage(dam):
+	print("itookdamage")
+	take_damage(dam)
+	barProgress.damage(dam)
