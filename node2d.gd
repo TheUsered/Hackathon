@@ -32,7 +32,7 @@ func _ready():
 	p.position = startpos
 	add_child(p)
 	
-	for i in range(1):
+	for i in range(5):
 		randomize()
 		var estartpos = Vector2(rand_range(-15, 15), rand_range(-8, 8))
 		while tilemap.get_cellv(estartpos) != 1:

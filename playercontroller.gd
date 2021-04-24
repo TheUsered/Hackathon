@@ -39,5 +39,5 @@ func _process(delta):
 	
 	move_and_slide(vel)
 
-func die(d):
+func take_damage(d):
 	health -= d
