@@ -1,0 +1,78 @@
+[gd_scene load_steps=8 format=2]
+
+[ext_resource path="res://art/Comfortaa-Bold.ttf" type="DynamicFontData" id=1]
+[ext_resource path="res://art/label_HP.png" type="Texture" id=2]
+[ext_resource path="res://art/label_HP_bg.png" type="Texture" id=3]
+[ext_resource path="res://art/lifebar_fill.png" type="Texture" id=4]
+[ext_resource path="res://art/lifebar_bg.png" type="Texture" id=5]
+[ext_resource path="res://scenes/Gui.gd" type="Script" id=6]
+
+[sub_resource type="DynamicFont" id=1]
+size = 24
+extra_spacing_bottom = 2
+font_data = ExtResource( 1 )
+
+[node name="Node2D" type="Node2D"]
+
+[node name="Gui" type="MarginContainer" parent="."]
+anchor_right = 1.0
+custom_constants/margin_right = 20
+custom_constants/margin_top = 20
+custom_constants/margin_left = 20
+custom_constants/margin_bottom = 20
+script = ExtResource( 6 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="HBoxContainer" type="HBoxContainer" parent="Gui"]
+margin_left = 20.0
+margin_top = 20.0
+margin_right = 520.0
+margin_bottom = 73.0
+
+[node name="bars" type="VBoxContainer" parent="Gui/HBoxContainer"]
+margin_right = 500.0
+margin_bottom = 53.0
+
+[node name="bar" type="HBoxContainer" parent="Gui/HBoxContainer/bars"]
+margin_right = 500.0
+margin_bottom = 53.0
+
+[node name="MarginContainer" type="MarginContainer" parent="Gui/HBoxContainer/bars/bar"]
+margin_right = 100.0
+margin_bottom = 53.0
+
+[node name="background" type="NinePatchRect" parent="Gui/HBoxContainer/bars/bar/MarginContainer"]
+margin_right = 100.0
+margin_bottom = 53.0
+rect_min_size = Vector2( 100, 40 )
+texture = ExtResource( 3 )
+
+[node name="title" type="TextureRect" parent="Gui/HBoxContainer/bars/bar/MarginContainer/background"]
+margin_right = 50.0
+margin_bottom = 40.0
+texture = ExtResource( 2 )
+stretch_mode = 4
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="number" type="Label" parent="Gui/HBoxContainer/bars/bar/MarginContainer/background"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_right = -12.0
+custom_fonts/font = SubResource( 1 )
+text = "10"
+align = 2
+valign = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="TextureProgress" type="TextureProgress" parent="Gui/HBoxContainer/bars/bar"]
+margin_left = 104.0
+margin_right = 500.0
+margin_bottom = 53.0
+texture_under = ExtResource( 5 )
+texture_progress = ExtResource( 4 )
