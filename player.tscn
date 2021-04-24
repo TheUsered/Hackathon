@@ -19,16 +19,3 @@ shape = SubResource( 1 )
 [node name="Camera2D" type="Camera2D" parent="."]
 current = true
 zoom = Vector2( 0.75, 0.75 )
-
-[node name="healthtext" type="RichTextLabel" parent="."]
-margin_left = -360.0
-margin_top = 168.0
-margin_right = -320.0
-margin_bottom = 188.0
-rect_scale = Vector2( 2, 2 )
-text = "
-"
-scroll_active = false
-__meta__ = {
-"_edit_use_anchors_": false
-}
