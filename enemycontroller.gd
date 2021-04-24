@@ -8,9 +8,8 @@ func _process(delta):
 	if ray.is_colliding():
 		var coll = ray.get_collider()
 		if coll.has_method("die"):
-			coll.die()
-		else:
-			rotation_degrees += 180
-			vel.y *= -1
+			coll.die(5)
+		rotation_degrees += 180
+		vel.y *= -1
 		
 	move_and_slide(vel)

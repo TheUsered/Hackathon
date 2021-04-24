@@ -1,8 +1,14 @@
 extends KinematicBody2D
 
 var speed = 240
+var health = 50
 
 func _process(delta):
+	
+	$healthtext.text = str(health)
+	
+	if health <= 0:
+		Engine.time_scale = 0
 	
 	var vel = Vector2()
 	
@@ -17,5 +23,5 @@ func _process(delta):
 	
 	move_and_slide(vel)
 
-func die():
-	Engine.time_scale = 0
+func die(d):
+	health -= d
