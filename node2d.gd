@@ -2,6 +2,7 @@ extends Node2D
 
 onready var tilemap = $TileMap
 onready var player = preload("res://scenes/player.tscn")
+onready var enemy = preload("res://scenes/enemy.tscn")
 
 func _ready():
 	randomize()
@@ -24,9 +25,20 @@ func _ready():
 			speed *= Vector2(-1, -1)
 		
 		pos += speed
-		tilemap.set_cellv(pos, -1)
+		tilemap.set_cellv(pos, 1)
 	
 	var startpos = Vector2(0, 0)
 	var p = player.instance()
 	p.position = startpos
 	add_child(p)
+	
+	for i in range(1):
+		randomize()
+		var estartpos = Vector2(rand_range(-15, 15), rand_range(-8, 8))
+		while tilemap.get_cellv(estartpos) != 1:
+			estartpos = Vector2(rand_range(-15, 15), rand_range(-8, 8))
+			if tilemap.get_cellv(estartpos) == 1:
+				break
+		var en = enemy.instance()
+		en.position = estartpos
+		add_child(en)
